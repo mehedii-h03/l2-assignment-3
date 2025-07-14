@@ -2,14 +2,15 @@ import express from "express";
 import {
   createBook,
   deleteBookById,
-  getBooks,
+  getAllBooks,
+  getBookById,
   updateBookById,
 } from "../controllers/book.controller";
 
 export const bookRoutes = express.Router();
 
 bookRoutes.post("/books", createBook);
-bookRoutes.get("/books", getBooks);
-bookRoutes.get("/books/:bookId", getBooks);
+bookRoutes.get("/books", getAllBooks);
+bookRoutes.get("/books/:bookId", getBookById);
 bookRoutes.patch("/books/:bookId", updateBookById);
-bookRoutes.delete("books/:bookId", deleteBookById);
+bookRoutes.delete("/books/:bookId", deleteBookById);

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.model";
+import { createBookSchema } from "../validations/book.validation";
 
 // Create book
 export const createBook = async (
@@ -8,10 +9,16 @@ export const createBook = async (
   next: NextFunction
 ) => {
   try {
-    const body = req.body;
-    console.log(body);
-
-    const payload = { ...body, available: true };
+    const parsed = createBookSchema.safeParse(req.body);
+    console.log(parsed);
+    if (!parsed.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        error: parsed.error.issues,
+      });
+    }
+    const payload = { ...parsed.data, available: true };
     const book = await Book.create(payload);
 
     res.json({
@@ -25,15 +32,34 @@ export const createBook = async (
 };
 
 // get all books
-export const getBooks = async (
+export const getAllBooks = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const books = await Book.find();
+    const {
+      filter,
+      sortBy = "createdAt",
+      sort = "desc",
+      limit = "10",
+    } = req.query;
 
-    // TODO need to add filter and sort
+    const query: any = {};
+
+    if (filter) {
+      query.genre = filter;
+    }
+
+    const limitNumber = parseInt(limit as string, 10) || 10;
+
+    const sortOrder = sort === "asc" ? 1 : -1;
+
+    const sortField = sortBy as string;
+
+    const books = await Book.find(query)
+      .sort({ [sortField]: sortOrder })
+      .limit(limitNumber);
 
     res.json({
       success: true,
@@ -56,6 +82,14 @@ export const getBookById = async (
 
     const book = await Book.findById(bookId);
 
+    if (!book) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+        data: null,
+      });
+    }
+
     res.json({
       success: true,
       message: "Book retrieved successfully",
@@ -75,7 +109,20 @@ export const updateBookById = async (
   try {
     const bookId = req.params.bookId;
     const body = req.body;
-    const updatedBook = await Book.findByIdAndUpdate(bookId, body);
+
+    const updatedBook = await Book.findByIdAndUpdate(bookId, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedBook) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+        data: null,
+      });
+    }
+
     res.json({
       success: true,
       message: "Book updated successfully",
@@ -94,7 +141,15 @@ export const deleteBookById = async (
 ) => {
   try {
     const bookId = req.params.bookId;
-    await Book.findByIdAndDelete(bookId);
+    const book = await Book.findByIdAndDelete(bookId);
+
+    if (!book) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+        data: null,
+      });
+    }
     res.json({
       success: true,
       message: "Book deleted successfully",

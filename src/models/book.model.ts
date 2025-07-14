@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { TBook } from "../validations/book.validation";
+import { TCreateBook } from "../validations/book.validation";
 
-const bookSchema = new Schema<TBook>(
+const bookSchema = new Schema<TCreateBook>(
   {
     title: { type: String, required: true, trim: true },
     author: { type: String, required: true, trim: true },
@@ -22,13 +22,15 @@ const bookSchema = new Schema<TBook>(
     copies: { type: Number, required: true, min: 0 },
     available: {
       type: Boolean,
-      required: true,
       default: true,
     },
   },
   {
+    versionKey: false,
     timestamps: true,
   }
 );
 
 export const Book = mongoose.model("Book", bookSchema);
+
+// TODO need to add static method
