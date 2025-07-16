@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Borrow } from "../models/borrow.model";
+import { createBorrowSchema } from "../validations/borrow.validation";
 
 // post borrow request
 export const createBorrowRequest = async (
@@ -8,9 +9,16 @@ export const createBorrowRequest = async (
   next: NextFunction
 ) => {
   try {
-    const body = req.body;
+    const parsed = createBorrowSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        error: parsed.error.format(),
+      });
+    }
 
-    const data = await Borrow.create(body);
+    const data = await Borrow.create(parsed);
 
     res.json({
       success: true,

@@ -1,4 +1,4 @@
-node_modulesgit remote add origin https://github.com/mehedii-h03/l2-assignment-3.git
+node_modules
 git push -u origin main
 .env
 LIBRARY-MANAGEMENT-TREE.txt

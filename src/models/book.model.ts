@@ -33,4 +33,7 @@ const bookSchema = new Schema<TCreateBook>(
 
 export const Book = mongoose.model("Book", bookSchema);
 
-// TODO need to add static method
+// TODO
+// need to add static method
+// pre post method
+// Video Explanation

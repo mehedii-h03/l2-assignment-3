@@ -1,10 +1,12 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   createBorrowRequest,
   getBorrowedSummary,
 } from "../controllers/borrow.controller";
 
-export const borrowRoutes = express.Router();
+const router = Router();
 
-borrowRoutes.post("/borrow", createBorrowRequest);
-borrowRoutes.get("/borrow", getBorrowedSummary);
+router.post("/borrow", createBorrowRequest);
+router.get("/borrow", getBorrowedSummary);
+
+export const borrowRoutes = router;

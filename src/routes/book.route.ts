@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   createBook,
   deleteBookById,
@@ -7,10 +7,12 @@ import {
   updateBookById,
 } from "../controllers/book.controller";
 
-export const bookRoutes = express.Router();
+const router = Router();
 
-bookRoutes.post("/books", createBook);
-bookRoutes.get("/books", getAllBooks);
-bookRoutes.get("/books/:bookId", getBookById);
-bookRoutes.patch("/books/:bookId", updateBookById);
-bookRoutes.delete("/books/:bookId", deleteBookById);
+router.post("/books", createBook);
+router.get("/books", getAllBooks);
+router.get("/books/:bookId", getBookById);
+router.patch("/books/:bookId", updateBookById);
+router.delete("/books/:bookId", deleteBookById);
+
+export const bookRoutes = router;
