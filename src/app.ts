@@ -13,7 +13,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Library Management app.");
 });
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "API endpoint not found",

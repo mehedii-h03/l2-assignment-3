@@ -1,12 +1,7 @@
 import { ErrorRequestHandler } from "express";
 import mongoose from "mongoose";
 
-export const globalErrorHandler: ErrorRequestHandler = (
-  err,
-  req,
-  res,
-  next
-) => {
+export const globalErrorHandler: ErrorRequestHandler = (err, req, res) => {
   let statusCode = 500;
   let message = "Something went wrong";
 

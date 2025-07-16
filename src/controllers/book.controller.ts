@@ -45,9 +45,9 @@ export const getAllBooks = async (
       limit = "10",
     } = req.query;
 
-    const query: any = {};
+    const query: { genre?: string } = {};
 
-    if (filter) {
+    if (typeof filter === "string") {
       query.genre = filter;
     }
 
