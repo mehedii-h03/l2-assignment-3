@@ -1,6 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-const borrowSchema = new Schema(
+interface BorrowDocument extends Document {
+  book: mongoose.Types.ObjectId;
+  quantity: number;
+  dueDate: Date;
+}
+
+const borrowSchema = new Schema<BorrowDocument>(
   {
     book: { type: Schema.Types.ObjectId, ref: "Book", required: true },
     quantity: {
@@ -11,10 +17,10 @@ const borrowSchema = new Schema(
         validator: Number.isInteger,
         message: "Quantity must be an integer",
       },
-      dueDate: {
-        type: Date,
-        required: true,
-      },
+    },
+    dueDate: {
+      type: Date,
+      required: true,
     },
   },
   {
@@ -23,4 +29,10 @@ const borrowSchema = new Schema(
   }
 );
 
-export const Borrow = mongoose.model("Borrow", borrowSchema);
+// Pre save middleware
+borrowSchema.pre("save", function (next) {
+  console.log(`Borrow record about to be saved for book ${this.book}`);
+  next();
+});
+
+export const Borrow = mongoose.model<BorrowDocument>("Borrow", borrowSchema);

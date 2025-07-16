@@ -1,29 +1,47 @@
 import { NextFunction, Request, Response } from "express";
 import { Borrow } from "../models/borrow.model";
-import { createBorrowSchema } from "../validations/borrow.validation";
+import { Book } from "../models/book.model";
 
 // post borrow request
+
 export const createBorrowRequest = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const parsed = createBorrowSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({
+    const { book: bookId, quantity, dueDate } = req.body;
+
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({
         success: false,
-        message: "Validation failed",
-        error: parsed.error.format(),
+        message: "Book not found",
       });
     }
 
-    const data = await Borrow.create(parsed);
+    if (book.copies < quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Not enough copies available",
+      });
+    }
+
+    book.copies -= quantity;
+    await book.save();
+
+    await Book.updateAvailability(bookId, book.copies);
+
+    const borrow = await Borrow.create({
+      book: bookId,
+      quantity,
+      dueDate,
+    });
 
     res.json({
       success: true,
       message: "Book borrowed successfully",
-      data: data,
+      data: borrow,
     });
   } catch (error) {
     next(error);
