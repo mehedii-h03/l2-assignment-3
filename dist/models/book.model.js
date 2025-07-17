@@ -74,5 +74,3 @@ bookSchema.statics.updateAvailability = function (bookId, copies) {
     });
 };
 exports.Book = mongoose_1.default.model("Book", bookSchema);
-// TODO
-// Video Explanation

@@ -42,6 +42,3 @@ bookSchema.statics.updateAvailability = async function (
 };
 
 export const Book = mongoose.model<BookDocument, BookModel>("Book", bookSchema);
-
-// TODO
-// Video Explanation
