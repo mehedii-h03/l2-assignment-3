@@ -6,12 +6,9 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
-// Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
   "https://assignment-4-three-sigma.vercel.app",
-  "https://l2-assignment-3-lime.vercel.app",
-  "/(.*)",
 ];
 
 app.use(
@@ -25,12 +22,12 @@ app.use(
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   })
 );
 
 app.use(express.json());
 
+// Routes
 app.use("/api", bookRoutes);
 app.use("/api", borrowRoutes);
 
@@ -38,17 +35,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Library Management app.");
 });
 
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "API endpoint not found",
-    error: {
-      path: req.originalUrl,
-      method: req.method,
-    },
-  });
-});
-
+// Error handling
 app.use(globalErrorHandler);
 
 export default app;
