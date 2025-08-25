@@ -1,0 +1,42 @@
+├── dist
+│   ├── app.js
+│   ├── controllers
+│   │   ├── book.controller.js
+│   │   └── borrow.controller.js
+│   ├── middlewares
+│   │   ├── globalErrorHandler.js
+│   │   └── handleZodError.js
+│   ├── models
+│   │   ├── book.model.js
+│   │   └── borrow.model.js
+│   ├── routes
+│   │   ├── book.route.js
+│   │   └── borrow.route.js
+│   ├── server.js
+│   └── validations
+│       ├── book.validation.js
+│       └── borrow.validation.js
+├── eslint.config.mjs
+├── package-lock.json
+├── package.json
+├── README.md
+├── src
+│   ├── app.ts
+│   ├── controllers
+│   │   ├── book.controller.ts
+│   │   └── borrow.controller.ts
+│   ├── middlewares
+│   │   ├── globalErrorHandler.ts
+│   │   └── handleZodError.ts
+│   ├── models
+│   │   ├── book.model.ts
+│   │   └── borrow.model.ts
+│   ├── routes
+│   │   ├── book.route.ts
+│   │   └── borrow.route.ts
+│   ├── server.ts
+│   └── validations
+│       ├── book.validation.ts
+│       └── borrow.validation.ts
+├── tsconfig.json
+└── vercel.json
