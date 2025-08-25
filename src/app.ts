@@ -11,6 +11,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://assignment-4-three-sigma.vercel.app",
   "https://l2-assignment-3-lime.vercel.app",
+  "/(.*)",
 ];
 
 app.use(
