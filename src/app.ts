@@ -1,11 +1,22 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { bookRoutes } from "./routes/book.route";
 import { borrowRoutes } from "./routes/borrow.route";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
-import cors from "cors";
 
 const app = express();
-app.use(cors());
+
+// Middleware to handle CORS properly
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(express.json());
 
