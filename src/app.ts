@@ -1,22 +1,32 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
+import cors from "cors";
 import { bookRoutes } from "./routes/book.route";
 import { borrowRoutes } from "./routes/borrow.route";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
-// Middleware to handle CORS properly
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+// Allowed origins
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://assignment-4-three-sigma.vercel.app",
+  "https://l2-assignment-3-lime.vercel.app",
+];
 
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
