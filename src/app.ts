@@ -6,7 +6,7 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
-// ✅ Allowed origins
+// Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
   "https://assignment-4-three-sigma.vercel.app",
