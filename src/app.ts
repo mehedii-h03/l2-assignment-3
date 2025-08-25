@@ -6,11 +6,13 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
+// ✅ Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
   "https://assignment-4-three-sigma.vercel.app",
 ];
 
+//  Use cors middleware
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -27,7 +29,7 @@ app.use(
 
 app.use(express.json());
 
-// Routes
+//  Routes
 app.use("/api", bookRoutes);
 app.use("/api", borrowRoutes);
 
@@ -35,7 +37,18 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Library Management app.");
 });
 
-// Error handling
+// 404
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "API endpoint not found",
+    error: {
+      path: req.originalUrl,
+      method: req.method,
+    },
+  });
+});
+
 app.use(globalErrorHandler);
 
 export default app;
