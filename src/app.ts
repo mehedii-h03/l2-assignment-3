@@ -6,22 +6,13 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
-// Allowed origins
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://assignment-4-three-sigma.vercel.app",
-];
-
-//  Use cors middleware
+//  cors middleware
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://assignment-4-three-sigma.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
