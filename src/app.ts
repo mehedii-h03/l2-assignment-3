@@ -6,19 +6,21 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app = express();
 
+app.use(express.json());
+
 //  cors middleware
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "https://assignment-4-three-sigma.vercel.app",
+      "*",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
-
-app.use(express.json());
 
 //  Routes
 app.use("/api", bookRoutes);
