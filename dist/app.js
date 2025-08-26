@@ -25,7 +25,7 @@ app.use((0, cors_1.default)({
 app.use("/api", book_route_1.bookRoutes);
 app.use("/api", borrow_route_1.borrowRoutes);
 app.get("/", (req, res) => {
-    res.send("Welcome to Library Management app.");
+    res.send("Welcome to Library Management app. new deploy");
 });
 // 404
 app.use((req, res) => {
